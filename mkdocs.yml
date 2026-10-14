@@ -5,12 +5,17 @@ site_description: Dias úteis para aplicações financeiras, com foco no mercado
 site_url: https://0b10n3.github.io/bizdays-rs/
 repo_url: https://github.com/0b10n3/bizdays-rs
 repo_name: 0b10n3/bizdays-rs
-edit_uri: edit/main/docs/
-copyright: MIT OR Apache-2.0
+edit_uri: edit/develop/docs/
+copyright: MIT
 
 theme:
   name: material
   language: pt-BR
+  logo: assets/logo.svg
+  favicon: assets/logo.svg
+  font:  # tokens typography.fontFamily (body, data) de docs/brand/tokens.json
+    text: Source Sans 3
+    code: IBM Plex Mono
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default
@@ -88,6 +93,7 @@ nav:
       - Rust: referencia/rust.md
   - Desenvolvimento:
       - Contribuindo: desenvolvimento/contribuindo.md
+      - Fluxo Git: desenvolvimento/fluxo-git.md
       - Agentes de IA: desenvolvimento/agentes.md
       - Arquitetura: desenvolvimento/arquitetura.md
       - Testes: desenvolvimento/testes.md

@@ -7,8 +7,8 @@ name = "bizdays-rs"
 description = "Business-day calendars for financial applications (ANBIMA, B3), powered by Rust"
 readme = "README.md"
 requires-python = ">=3.10"
-license = "MIT OR Apache-2.0"
-license-files = ["LICENSE-MIT", "LICENSE-APACHE"]
+license = "MIT"
+license-files = ["LICENSE-MIT"]
 authors = [{ name = "0b10n3", email = "silvasmath@gmail.com" }]
 keywords = ["business-days", "calendar", "holidays", "finance", "fixed-income"]
 classifiers = [

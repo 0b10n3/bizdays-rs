@@ -7,4 +7,4 @@ market (ANBIMA, B3).
 
 See the [main README](https://github.com/0b10n3/bizdays-rs#readme) for details.
 
-Licensed under either of MIT or Apache-2.0, at your option.
+Licensed under the MIT license.

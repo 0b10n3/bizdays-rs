@@ -38,8 +38,8 @@ bizdays(2026-10-09, 2026-10-13) = 1   # só a sexta, 09/10
 bizdays(2026-10-09, 2026-10-12) = 1   # python-bizdays devolve 0
 ```
 
-O python-bizdays devolve 1 a menos quando `até` não é dia útil; a divergência é
-intencional ([ADR-0001](docs/adr/0001-semantica-de-contagem.md)).
+Se `de > até`, o resultado é `-bizdays(até, de)`. O python-bizdays devolve 1 a
+menos quando `até` não é dia útil; a divergência é intencional ([ADR-0001](docs/adr/0001-semantica-de-contagem.md)).
 
 ## Integrações previstas
 
@@ -69,8 +69,7 @@ Veja o [`CONTRIBUTING.md`](CONTRIBUTING.md) e o [`AGENTS.md`](AGENTS.md).
 
 ## Licença
 
-Licenciado sob MIT ou Apache-2.0, à sua escolha
-([`LICENSE-MIT`](LICENSE-MIT), [`LICENSE-APACHE`](LICENSE-APACHE)).
+Licenciado sob a licença MIT ([`LICENSE-MIT`](LICENSE-MIT)).
 
 ## Agradecimentos
 

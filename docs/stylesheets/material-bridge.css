@@ -29,7 +29,7 @@
   --md-typeset-a-color: var(--sx-color-theme-link-foreground);
 }
 
-/* O logo é Forest sobre o cabeçalho Forest: versão monocromática clara. */
+/* O logo é Forest/Grove sobre o cabeçalho Forest: versão monocromática clara. */
 .md-header__button.md-logo img {
   filter: brightness(0) invert(1);
 }

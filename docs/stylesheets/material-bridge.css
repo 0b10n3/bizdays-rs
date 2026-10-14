@@ -1,61 +1,35 @@
 /*
- * Ponte entre a paleta Syntaxis (variáveis --sx-*, geradas em syntaxis.css)
- * e as variáveis do Material for MkDocs. Editável à mão.
+ * Ponte entre a paleta Syntaxis (variáveis --sx-*, geradas em syntaxis.css a
+ * partir de docs/brand/tokens.json) e as variáveis do Material for MkDocs.
+ * Editável à mão. Só use tokens existentes: não invente cores da marca.
  *
- * Cada mapeamento usa var(--sx-…, <padrão do Material>): enquanto o token não
- * existir, vale o padrão do Material. Os nomes --sx-* abaixo são provisórios.
- * TODO: escolher o token certo de docs/brand/tokens.json em cada linha.
- * Não invente cores da marca.
+ * O realce de código fica com o padrão do Material: a marca não tem tokens de
+ * sintaxe.
  */
 
 [data-md-color-scheme="default"] {
-  /* TODO: token da cor primária da marca */
-  --md-primary-fg-color: var(--sx-color-primary, #4051b5);
-  /* TODO: variação clara da primária */
-  --md-primary-fg-color--light: var(--sx-color-primary-light, #5d6cc0);
-  /* TODO: variação escura da primária */
-  --md-primary-fg-color--dark: var(--sx-color-primary-dark, #303fa1);
-  /* TODO: token de destaque (links em hover, foco) */
-  --md-accent-fg-color: var(--sx-color-accent, #526cfe);
-  /* TODO: token de superfície/fundo */
-  --md-default-bg-color: var(--sx-color-surface, #ffffff);
-
-  /* Realce de código. TODO: tokens de sintaxe, se a marca tiver */
-  --md-code-hl-number-color: var(--sx-code-number, #d52a2a);
-  --md-code-hl-special-color: var(--sx-code-special, #db1457);
-  --md-code-hl-function-color: var(--sx-code-function, #a846b9);
-  --md-code-hl-constant-color: var(--sx-code-constant, #6e59d9);
-  --md-code-hl-keyword-color: var(--sx-code-keyword, #3f6ec6);
-  --md-code-hl-string-color: var(--sx-code-string, #1c7d4d);
-  --md-code-hl-name-color: var(--sx-code-name, var(--md-code-fg-color));
-  --md-code-hl-operator-color: var(--sx-code-operator, var(--md-default-fg-color--light));
-  --md-code-hl-punctuation-color: var(--sx-code-punctuation, var(--md-default-fg-color--light));
-  --md-code-hl-comment-color: var(--sx-code-comment, var(--md-default-fg-color--light));
-  --md-code-hl-generic-color: var(--sx-code-generic, var(--md-default-fg-color--light));
-  --md-code-hl-variable-color: var(--sx-code-variable, var(--md-default-fg-color--light));
+  --md-primary-fg-color: var(--sx-color-theme-primary);
+  --md-primary-fg-color--light: var(--sx-color-forest-300);
+  --md-primary-fg-color--dark: var(--sx-color-forest-700);
+  --md-primary-bg-color: var(--sx-color-theme-primary-foreground);
+  /* Lime sobre fundo claro tem pouco contraste: a marca usa Grove (secondary). */
+  --md-accent-fg-color: var(--sx-color-theme-secondary);
+  --md-default-bg-color: var(--sx-color-theme-background);
+  --md-default-fg-color: var(--sx-color-theme-foreground);
+  --md-typeset-a-color: var(--sx-color-theme-link-foreground);
 }
 
 [data-md-color-scheme="slate"] {
-  /* TODO: token da cor primária da marca (modo escuro) */
-  --md-primary-fg-color: var(--sx-color-primary, #4051b5);
-  --md-primary-fg-color--light: var(--sx-color-primary-light, #5d6cc0);
-  --md-primary-fg-color--dark: var(--sx-color-primary-dark, #303fa1);
-  /* TODO: token de destaque (modo escuro) */
-  --md-accent-fg-color: var(--sx-color-accent, #526cfe);
-  /* TODO: token de superfície/fundo (modo escuro); padrão do slate */
-  --md-default-bg-color: var(--sx-color-surface, hsla(var(--md-hue), 15%, 14%, 1));
+  --md-primary-fg-color: var(--sx-color-theme-primary);
+  --md-primary-fg-color--light: var(--sx-color-grove-500);
+  --md-primary-fg-color--dark: var(--sx-color-grove-900);
+  --md-primary-bg-color: var(--sx-color-theme-primary-foreground);
+  --md-accent-fg-color: var(--sx-color-theme-accent);
+  --md-default-bg-color: var(--sx-color-theme-background);
+  --md-typeset-a-color: var(--sx-color-theme-link-foreground);
+}
 
-  /* Realce de código (modo escuro). TODO: tokens de sintaxe */
-  --md-code-hl-number-color: var(--sx-code-number, #e6695b);
-  --md-code-hl-special-color: var(--sx-code-special, #f06090);
-  --md-code-hl-function-color: var(--sx-code-function, #c973d9);
-  --md-code-hl-constant-color: var(--sx-code-constant, #9383e2);
-  --md-code-hl-keyword-color: var(--sx-code-keyword, #6791e0);
-  --md-code-hl-string-color: var(--sx-code-string, #2fb170);
-  --md-code-hl-name-color: var(--sx-code-name, var(--md-code-fg-color));
-  --md-code-hl-operator-color: var(--sx-code-operator, var(--md-default-fg-color--light));
-  --md-code-hl-punctuation-color: var(--sx-code-punctuation, var(--md-default-fg-color--light));
-  --md-code-hl-comment-color: var(--sx-code-comment, var(--md-default-fg-color--light));
-  --md-code-hl-generic-color: var(--sx-code-generic, var(--md-default-fg-color--light));
-  --md-code-hl-variable-color: var(--sx-code-variable, var(--md-default-fg-color--light));
+/* O logo é Forest sobre o cabeçalho Forest: versão monocromática clara. */
+.md-header__button.md-logo img {
+  filter: brightness(0) invert(1);
 }

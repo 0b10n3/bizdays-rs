@@ -1,7 +1,117 @@
 /* GERADO por just brand — não edite. Fonte: docs/brand/tokens.json */
 
-/*
- * Ainda vazio: o tokens.json da Syntaxis não foi fornecido.
- * Para gerar: copie o arquivo para docs/brand/tokens.json e rode `just brand`.
- * Os tokens de cor viram variáveis --sx-*, usadas em material-bridge.css.
- */
+:root {
+  --sx-color-forest-100: #D4EDE0;
+  --sx-color-forest-300: #6DB890;
+  --sx-color-forest-500: #1B6A45;
+  --sx-color-forest-700: #125233;
+  --sx-color-forest-900: #0A3320;
+  --sx-color-grove-100: #C8EBDA;
+  --sx-color-grove-300: #78C9A4;
+  --sx-color-grove-500: #2D9E67;
+  --sx-color-grove-700: #1E7A4F;
+  --sx-color-grove-900: #0F4E32;
+  --sx-color-lime-100: #F2FBD9;
+  --sx-color-lime-300: #DFF7A1;
+  --sx-color-lime-500: #CDF163;
+  --sx-color-lime-700: #5F7D1C;
+  --sx-color-lime-900: #3B4E10;
+  --sx-color-neutral-chalk: #F7F7F5;
+  --sx-color-neutral-ink: #141414;
+  --sx-color-neutral-slate: #4A5568;
+  --sx-color-neutral-mint: #E6F4EE;
+  --sx-color-neutral-mist: #E2E8F0;
+  --sx-color-neutral-deep-forest: #0F3D27;
+  --sx-color-neutral-white: #FFFFFF;
+  --sx-color-semantic-success: #22C55E;
+  --sx-color-semantic-error: #EF4444;
+  --sx-color-semantic-error-text: #B91C1C;
+  --sx-color-semantic-warning: #F59E0B;
+  --sx-color-semantic-info: #3B82F6;
+  --sx-color-semantic-progress-bar: var(--sx-color-grove-500);
+  --sx-color-semantic-progress-track: var(--sx-color-neutral-mist);
+  --sx-component-button-primary-background: var(--sx-color-lime-500);
+  --sx-component-button-primary-foreground: var(--sx-color-neutral-ink);
+  --sx-component-button-primary-hover-background: var(--sx-color-lime-300);
+  --sx-component-card-border-color-light: var(--sx-color-neutral-mist);
+  --sx-component-hairline-color-light: var(--sx-color-neutral-mist);
+  --sx-component-hairline-color-on-dark: #25372F;
+  --sx-component-band-background: var(--sx-color-neutral-deep-forest);
+  --sx-component-band-background-max-contrast: var(--sx-color-neutral-ink);
+  --sx-component-band-foreground: var(--sx-color-neutral-chalk);
+  --sx-component-band-eyebrow-color: var(--sx-color-lime-300);
+  --sx-component-highlight-color: var(--sx-color-lime-500);
+  --sx-component-highlight-block-foreground: var(--sx-color-neutral-ink);
+  --sx-component-eyebrow-color-light: var(--sx-color-grove-700);
+  --sx-component-eyebrow-color-on-dark: var(--sx-color-lime-300);
+  --sx-pattern-mesh-color: var(--sx-color-grove-500);
+  --sx-pattern-node-branch-color: var(--sx-color-grove-500);
+  --sx-pattern-reticula-fine-color: var(--sx-color-neutral-mist);
+  --sx-pattern-growth-line-color: var(--sx-color-lime-500);
+  --sx-pattern-growth-line-color-on-light: var(--sx-color-lime-700);
+  --sx-pattern-data-grid-color: var(--sx-color-neutral-mist);
+  --sx-illustration-figure-primary: var(--sx-color-grove-500);
+  --sx-illustration-figure-secondary: var(--sx-color-grove-300);
+  --sx-illustration-accent: var(--sx-color-lime-500);
+  --sx-gradient-ambient-forest-color: var(--sx-color-forest-700);
+  --sx-gradient-ambient-lime-color: var(--sx-color-lime-500);
+}
+
+[data-md-color-scheme="default"] {
+  --sx-color-theme-background: var(--sx-color-neutral-chalk);
+  --sx-color-theme-foreground: var(--sx-color-neutral-ink);
+  --sx-color-theme-card: var(--sx-color-neutral-white);
+  --sx-color-theme-card-foreground: var(--sx-color-neutral-ink);
+  --sx-color-theme-popover: var(--sx-color-neutral-white);
+  --sx-color-theme-popover-foreground: var(--sx-color-neutral-ink);
+  --sx-color-theme-primary: var(--sx-color-forest-500);
+  --sx-color-theme-primary-foreground: var(--sx-color-neutral-chalk);
+  --sx-color-theme-secondary: var(--sx-color-grove-700);
+  --sx-color-theme-secondary-foreground: var(--sx-color-neutral-chalk);
+  --sx-color-theme-accent: var(--sx-color-lime-500);
+  --sx-color-theme-accent-foreground: var(--sx-color-neutral-ink);
+  --sx-color-theme-muted: var(--sx-color-neutral-mint);
+  --sx-color-theme-muted-foreground: var(--sx-color-neutral-slate);
+  --sx-color-theme-destructive: var(--sx-color-semantic-error);
+  --sx-color-theme-destructive-foreground: var(--sx-color-neutral-chalk);
+  --sx-color-theme-error-text: var(--sx-color-semantic-error-text);
+  --sx-color-theme-achievement-foreground: var(--sx-color-lime-900);
+  --sx-color-theme-link-foreground: var(--sx-color-forest-500);
+  --sx-color-theme-attention-text: var(--sx-color-lime-700);
+  --sx-color-theme-border: var(--sx-color-neutral-mist);
+  --sx-color-theme-input: var(--sx-color-neutral-mist);
+  --sx-color-theme-ring: var(--sx-color-forest-500);
+  --sx-illustration-stack-layer1: var(--sx-color-neutral-mist);
+  --sx-illustration-stack-layer2: var(--sx-color-neutral-mint);
+  --sx-illustration-stack-layer3: var(--sx-color-neutral-chalk);
+}
+
+[data-md-color-scheme="slate"] {
+  --sx-color-theme-background: #00120A;
+  --sx-color-theme-foreground: var(--sx-color-neutral-chalk);
+  --sx-color-theme-card: #0A1F15;
+  --sx-color-theme-card-foreground: var(--sx-color-neutral-chalk);
+  --sx-color-theme-popover: #0A1F15;
+  --sx-color-theme-popover-foreground: var(--sx-color-neutral-chalk);
+  --sx-color-theme-primary: var(--sx-color-grove-700);
+  --sx-color-theme-primary-foreground: var(--sx-color-neutral-chalk);
+  --sx-color-theme-secondary: var(--sx-color-neutral-mint);
+  --sx-color-theme-secondary-foreground: var(--sx-color-forest-500);
+  --sx-color-theme-accent: var(--sx-color-lime-500);
+  --sx-color-theme-accent-foreground: var(--sx-color-neutral-ink);
+  --sx-color-theme-muted: #15281F;
+  --sx-color-theme-muted-foreground: #94A3B8;
+  --sx-color-theme-destructive: #D54444;
+  --sx-color-theme-destructive-foreground: var(--sx-color-neutral-chalk);
+  --sx-color-theme-error-text: #F87171;
+  --sx-color-theme-achievement-foreground: var(--sx-color-lime-100);
+  --sx-color-theme-link-foreground: var(--sx-color-grove-500);
+  --sx-color-theme-attention-text: var(--sx-color-lime-300);
+  --sx-color-theme-border: #25372F;
+  --sx-color-theme-input: #25372F;
+  --sx-color-theme-ring: var(--sx-color-grove-500);
+  --sx-illustration-stack-layer1: var(--sx-color-neutral-ink);
+  --sx-illustration-stack-layer2: var(--sx-color-neutral-deep-forest);
+  --sx-illustration-stack-layer3: var(--sx-color-forest-700);
+  --sx-illustration-stack-layer4: var(--sx-color-forest-500);
+}

@@ -1,0 +1,124 @@
+{
+  "generator_version": "1.1.0",
+  "seed": 20261013,
+  "oracles": {
+    "numpy": "2.5.4",
+    "python-bizdays": "1.0.19"
+  },
+  "calendars": {
+    "ANBIMA": {
+      "sha256": "1c385197308a55de5d0731c6059e73651dd66c63bbdb0872f572978c5cff1e12",
+      "weekmask": "1111100",
+      "range": [
+        "2000-01-01",
+        "2099-12-31"
+      ],
+      "python_bizdays_range": [
+        "2000-01-01",
+        "2099-12-25"
+      ]
+    },
+    "B3": {
+      "sha256": "a3daa3f6511eee0cd2ff941bf7c3a9c86475bb415b2ccef8f4641761b9f550d7",
+      "weekmask": "1111100",
+      "range": [
+        "2000-01-01",
+        "2026-12-31"
+      ],
+      "python_bizdays_range": [
+        "2000-01-01",
+        "2026-12-31"
+      ]
+    }
+  },
+  "rows": {
+    "bizdays.csv": 12024,
+    "isbizday.csv": 2192,
+    "roll.csv": 8767,
+    "offset.csv": 36019,
+    "getdate.csv": 868,
+    "divergences_python_bizdays.csv": 500
+  },
+  "skipped": {
+    "getdate:B3": 124,
+    "offset:ANBIMA": 21,
+    "offset:B3": 72,
+    "roll:B3": 1
+  },
+  "divergences_python_bizdays": {
+    "ANBIMA": {
+      "pairs_sampled": 20000,
+      "by_endpoint_kind": {
+        "backward:from_biz__to_biz": {
+          "pairs": 4733
+        },
+        "backward:from_biz__to_nonbiz": {
+          "pairs": 2136
+        },
+        "backward:from_nonbiz__to_biz": {
+          "divergent": 2148,
+          "pairs": 2148,
+          "python_bizdays_minus_expected=+1": 2148
+        },
+        "backward:from_nonbiz__to_nonbiz": {
+          "divergent": 1038,
+          "pairs": 1038,
+          "python_bizdays_minus_expected=+1": 1038
+        },
+        "forward:from_biz__to_biz": {
+          "pairs": 4763
+        },
+        "forward:from_biz__to_nonbiz": {
+          "divergent": 2114,
+          "pairs": 2114,
+          "python_bizdays_minus_expected=-1": 2114
+        },
+        "forward:from_nonbiz__to_biz": {
+          "pairs": 2132
+        },
+        "forward:from_nonbiz__to_nonbiz": {
+          "divergent": 935,
+          "pairs": 936,
+          "python_bizdays_minus_expected=-1": 935
+        }
+      }
+    },
+    "B3": {
+      "pairs_sampled": 20000,
+      "by_endpoint_kind": {
+        "backward:from_biz__to_biz": {
+          "pairs": 4571
+        },
+        "backward:from_biz__to_nonbiz": {
+          "pairs": 2207
+        },
+        "backward:from_nonbiz__to_biz": {
+          "divergent": 2103,
+          "pairs": 2103,
+          "python_bizdays_minus_expected=+1": 2103
+        },
+        "backward:from_nonbiz__to_nonbiz": {
+          "divergent": 1003,
+          "pairs": 1004,
+          "python_bizdays_minus_expected=+1": 1003
+        },
+        "forward:from_biz__to_biz": {
+          "pairs": 4656
+        },
+        "forward:from_biz__to_nonbiz": {
+          "divergent": 2231,
+          "pairs": 2231,
+          "python_bizdays_minus_expected=-1": 2231
+        },
+        "forward:from_nonbiz__to_biz": {
+          "pairs": 2144
+        },
+        "forward:from_nonbiz__to_nonbiz": {
+          "divergent": 1084,
+          "pairs": 1084,
+          "python_bizdays_minus_expected=-1": 1084
+        }
+      }
+    }
+  }
+}

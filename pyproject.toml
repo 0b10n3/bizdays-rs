@@ -1,0 +1,41 @@
+# Virtual uv workspace: this root is not a package, it only holds the
+# development environment and tool configuration.
+[tool.uv.workspace]
+members = ["py-bizdays"]
+
+[tool.uv.sources]
+bizdays-rs = { workspace = true }
+
+[dependency-groups]
+dev = [
+  "bizdays-rs",
+  "pytest",
+  "hypothesis",
+  "ruff",
+  "mypy",
+  "maturin",
+  "numpy",
+  "pandas",
+  "polars",
+  "pyarrow",
+  # python-bizdays: test oracle for `offset` and `getdate`, and source of the
+  # ANBIMA/B3 holiday data (see crates/bizdays/data/README.md).
+  "bizdays",
+]
+docs = [
+  "mkdocs==1.6.1",
+  "mkdocs-material>=9.7,<10",
+  "mkdocstrings[python]",
+]
+bench = [
+  "pytest-benchmark",
+]
+
+[tool.ruff]
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.pytest.ini_options]
+testpaths = ["py-bizdays/tests", "tools/tests"]

@@ -1,0 +1,47 @@
+[build-system]
+requires = ["maturin>=1.15,<2"]
+build-backend = "maturin"
+
+[project]
+name = "bizdays-rs"
+description = "Business-day calendars for financial applications (ANBIMA, B3), powered by Rust"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE-MIT"]
+authors = [{ name = "0b10n3", email = "silvasmath@gmail.com" }]
+keywords = ["business-days", "calendar", "holidays", "finance", "fixed-income"]
+classifiers = [
+  "Development Status :: 1 - Planning",
+  "Intended Audience :: Financial and Insurance Industry",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Rust",
+  "Topic :: Office/Business :: Financial",
+  "Typing :: Typed",
+]
+dynamic = ["version"]
+
+[project.urls]
+Homepage = "https://0b10n3.github.io/bizdays-rs/"
+Documentation = "https://0b10n3.github.io/bizdays-rs/"
+Repository = "https://github.com/0b10n3/bizdays-rs"
+Changelog = "https://github.com/0b10n3/bizdays-rs/blob/main/CHANGELOG.md"
+
+[tool.maturin]
+python-source = "python"
+module-name = "bizdays_rs._bizdays_rs"
+# No `features = ["pyo3/extension-module"]`: since PyO3 0.26 that role is played by
+# the PYO3_BUILD_EXTENSION_MODULE env var, which maturin >= 1.9.4 sets itself.
+# Keeping it out lets `cargo test`/`cargo clippy --workspace` link normally.
+
+[tool.uv]
+# Rebuild the extension whenever Rust sources change.
+cache-keys = [
+  { file = "pyproject.toml" },
+  { file = "Cargo.toml" },
+  { file = "src/**/*.rs" },
+  { file = "../Cargo.toml" },
+  { file = "../crates/bizdays/Cargo.toml" },
+  { file = "../crates/bizdays/src/**/*.rs" },
+]

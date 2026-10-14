@@ -1,0 +1,35 @@
+/*
+ * Ponte entre a paleta Syntaxis (variáveis --sx-*, geradas em syntaxis.css a
+ * partir de docs/brand/tokens.json) e as variáveis do Material for MkDocs.
+ * Editável à mão. Só use tokens existentes: não invente cores da marca.
+ *
+ * O realce de código fica com o padrão do Material: a marca não tem tokens de
+ * sintaxe.
+ */
+
+[data-md-color-scheme="default"] {
+  --md-primary-fg-color: var(--sx-color-theme-primary);
+  --md-primary-fg-color--light: var(--sx-color-forest-300);
+  --md-primary-fg-color--dark: var(--sx-color-forest-700);
+  --md-primary-bg-color: var(--sx-color-theme-primary-foreground);
+  /* Lime sobre fundo claro tem pouco contraste: a marca usa Grove (secondary). */
+  --md-accent-fg-color: var(--sx-color-theme-secondary);
+  --md-default-bg-color: var(--sx-color-theme-background);
+  --md-default-fg-color: var(--sx-color-theme-foreground);
+  --md-typeset-a-color: var(--sx-color-theme-link-foreground);
+}
+
+[data-md-color-scheme="slate"] {
+  --md-primary-fg-color: var(--sx-color-theme-primary);
+  --md-primary-fg-color--light: var(--sx-color-grove-500);
+  --md-primary-fg-color--dark: var(--sx-color-grove-900);
+  --md-primary-bg-color: var(--sx-color-theme-primary-foreground);
+  --md-accent-fg-color: var(--sx-color-theme-accent);
+  --md-default-bg-color: var(--sx-color-theme-background);
+  --md-typeset-a-color: var(--sx-color-theme-link-foreground);
+}
+
+/* O logo é Forest sobre o cabeçalho Forest: versão monocromática clara. */
+.md-header__button.md-logo img {
+  filter: brightness(0) invert(1);
+}

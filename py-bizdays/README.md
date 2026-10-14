@@ -1,0 +1,8 @@
+# bizdays-rs
+
+Business-day calendars for financial applications, focused on the Brazilian
+market (ANBIMA, B3), powered by the Rust crate `bizdays`.
+
+**Status:** pre-alpha, phase 0 — the API is not implemented yet.
+
+See the [main README](https://github.com/0b10n3/bizdays-rs#readme).

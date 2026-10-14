@@ -1,0 +1,20 @@
+# Build artifacts
+target/
+.venv/
+__pycache__/
+*.so
+*.pyd
+dist/
+
+# Tool caches
+site/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.hypothesis/
+.benchmarks/
+
+# Project-local files
+.agent-implementation-mode
+CLAUDE.local.md
+.idea/

@@ -51,11 +51,11 @@ O mantenedor escreve a lógica e os testes do domínio. O agente ensina, revisa 
 
 Os ADRs ficam em `docs/adr/`.
 
-- `bizdays(de, até)` = dias úteis em `[de, até)`. Se `de > até`, o resultado é negativo. Sem flags (ADR-0001).
+- `bizdays(de, até)` = dias úteis em `[de, até)`. Se `de > até`, o resultado é `-bizdays(até, de)`, ou seja, `cum[até] - cum[de]` para quaisquer datas. Sem flags (ADR-0001).
 - Oráculos:
-  - NumPy (`busday_count`, `busday_offset`) para contagem e ajustes;
+  - NumPy (`busday_count`, `busday_offset`) para contagem e ajustes; em pares invertidos, `-busday_count(até, de)`, porque o NumPy e o Polars contam `(até, de]` e não são antissimétricos;
   - python-bizdays para `offset` e `getdate`, com as divergências documentadas.
-- Divergência conhecida: o python-bizdays devolve 1 a menos quando `até` não é dia útil. **Não imite.**
+- Divergência conhecida: o python-bizdays devolve 1 a menos (em módulo) quando a data mais tarde do par não é dia útil. **Não imite.**
 - Data fora da faixa do calendário gera erro explícito. Nulos propagam.
 - Invariantes, que viram testes de propriedade:
   - aditividade: `bizdays(a,b) + bizdays(b,c) == bizdays(a,c)`;
@@ -105,6 +105,8 @@ Detalhes em `docs/desenvolvimento/arquitetura.md`.
 | Site de documentação | `just docs` / `just docs-serve` |
 | Wheel local | `just wheel` |
 | Modo implementação | `just modo-implementacao on` (ou `off`, `status`) |
+| Nova branch de trabalho | `just branch feature e1-s03-date-civil` |
+| Release / hotfix | `just release-start`, `just hotfix-start`, `just release-finish` (só o mantenedor) |
 | Tudo o que o CI roda | `just ci` |
 
 Antes de declarar concluída uma tarefa de infraestrutura, rode `just ci`.
@@ -163,8 +165,10 @@ Antes de declarar concluída uma tarefa de infraestrutura, rode `just ci`.
 
 ## 10. Git
 
-- Conventional Commits em inglês: `feat`, `fix`, `test`, `docs`, `refactor`, `perf`, `build`, `ci`, `chore`.
-- Agentes **não** fazem commit, push, tag ou publicação sem pedido explícito. **Nunca** publique em crates.io ou PyPI.
+- **Git Flow**, conforme `docs/desenvolvimento/fluxo-git.md`: `main` só recebe o que foi publicado; `develop` é a branch padrão e de integração; trabalho em `feature/*`, `bugfix/*`, `chore/*`, `data/*`, com nomes validados no CI (`tools/git/flow.py`).
+- Conventional Commits em inglês: `feat`, `fix`, `test`, `docs`, `refactor`, `perf`, `build`, `ci`, `chore`, `data`, `release`.
+- Agentes **não** criam branch, commit, push, tag, PR ou release sem pedido explícito. **Nunca** publique em crates.io ou PyPI.
+- PRs de agentes têm como destino `develop`, nunca `main`. Agentes nunca fazem merge em `main`, nunca criam tags finais e nunca aprovam o environment `release`.
 - PRs seguem o template: teste antes do código, `just ci` verde, ADR se a semântica mudou, `CHANGELOG` atualizado.
 
 ## 11. Glossário
@@ -182,7 +186,7 @@ Antes de declarar concluída uma tarefa de infraestrutura, rode `just ci`.
 
 ## 12. Referências
 
-- Plano: `docs/desenvolvimento/estrategia.md`, `roadmap.md`, `arquitetura.md`, `testes.md`.
+- Plano: `docs/desenvolvimento/estrategia.md`, `roadmap.md`, `arquitetura.md`, `testes.md`, `fluxo-git.md`.
 - Rust: *The Rust Programming Language* (Rust Book), Rust API Guidelines, guia do PyO3, maturin, pyo3-polars.
 - Oráculos: NumPy `busday_count`/`busday_offset`; python-bizdays (inspiração e dados, MIT).
 - Domínio: Carreira & Brostowicz (2016), *Brazilian Derivatives and Securities*, cap. 2; Manual da Calculadora de Renda Fixa (CALC) da B3.

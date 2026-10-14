@@ -1,61 +1,78 @@
-# Release: publishes bizdays-rs to PyPI and bizdays to crates.io.
+# Release: triggered by the tags created with `just release-finish`
+# (docs/desenvolvimento/fluxo-git.md, sections 4.2 and 6).
 #
-# - Runs ONLY by hand (workflow_dispatch) and waits for approval in the
-#   `release` environment (Settings > Environments > release > required reviewers).
-# - Uses trusted publishing (OIDC), no tokens. It will NOT work until the
-#   trusted publishers are configured:
-#     * PyPI:      https://pypi.org/manage/account/publishing/ (project bizdays-rs,
-#                  workflow release.yml, environment release)
-#     * crates.io: crate settings > Trusted Publishing (crate bizdays,
-#                  workflow release.yml, environment release); the first
-#                  publish of a new crate must be done by hand.
+#   bizdays-vX.Y.Z           crates.io (approval in the `release` environment)
+#   bizdays-vX.Y.Z-rc.N      cargo publish --dry-run
+#   bizdays-rs-vX.Y.Z        PyPI (approval in the `release` environment)
+#   bizdays-rs-vX.Y.Z-rc.N   TestPyPI, as X.Y.ZrcN
+#
+# The tag must match the version in the package's Cargo.toml (without -rc.N),
+# and final tags must point at a commit on main. Final releases also create
+# the GitHub Release from the CHANGELOG section `## <package> X.Y.Z`.
+#
+# Uses trusted publishing (OIDC), no tokens. Configure the trusted publishers
+# (workflow release.yml) first:
+#   * PyPI:      project bizdays-rs, environment release
+#   * TestPyPI:  project bizdays-rs, no environment
+#   * crates.io: crate bizdays, environment release; the first publish of a
+#                new crate must be done by hand.
 name: Release
 
 on:
-  workflow_dispatch:
+  push:
+    tags: ["bizdays-v*", "bizdays-rs-v*"]
 
 permissions:
   contents: read
 
 concurrency:
-  group: release
+  group: release-${{ github.ref_name }}
   cancel-in-progress: false
 
 jobs:
-  build:
+  meta:
+    runs-on: ubuntu-latest
+    outputs:
+      package: ${{ steps.parse.outputs.package }}
+      version: ${{ steps.parse.outputs.version }}
+      rc: ${{ steps.parse.outputs.rc }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - id: parse
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          if [[ ! "$TAG" =~ ^(bizdays|bizdays-rs)-v([0-9]+\.[0-9]+\.[0-9]+)(-rc\.[0-9]+)?$ ]]; then
+            echo "::error::unexpected tag $TAG"; exit 1
+          fi
+          package="${BASH_REMATCH[1]}" base="${BASH_REMATCH[2]}" rc="${BASH_REMATCH[3]}"
+          manifest="$(python3 tools/git/flow.py version "$package")"
+          if [[ "$manifest" != "$base" ]]; then
+            echo "::error::$package Cargo.toml has $manifest, tag says $base"; exit 1
+          fi
+          if [[ -z "$rc" ]] && ! git merge-base --is-ancestor "$GITHUB_SHA" origin/main; then
+            echo "::error::final tag $TAG is not on main"; exit 1
+          fi
+          {
+            echo "package=$package"
+            echo "version=$base$rc"
+            echo "rc=$([[ -n "$rc" ]] && echo true || echo false)"
+          } >> "$GITHUB_OUTPUT"
+
+  crate-dry-run:
+    needs: meta
+    if: needs.meta.outputs.package == 'bizdays' && needs.meta.outputs.rc == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: PyO3/maturin-action@e83996d129638aa358a18fbd1dfb82f0b0fb5d3b # v1.51.0
-        with:
-          target: x86_64
-          manylinux: auto
-          args: --release --out dist -m py-bizdays/Cargo.toml
-      - uses: PyO3/maturin-action@e83996d129638aa358a18fbd1dfb82f0b0fb5d3b # v1.51.0
-        with:
-          command: sdist
-          args: --out dist -m py-bizdays/Cargo.toml
-      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
-        with:
-          name: dist
-          path: dist/
-
-  pypi:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: release
-      url: https://pypi.org/project/bizdays-rs/
-    permissions:
-      id-token: write
-    steps:
-      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
-        with:
-          name: dist
-          path: dist/
-      - uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33 # v1.14.2
+      - run: rustup toolchain install
+      - run: cargo publish --dry-run -p bizdays
 
   crates-io:
+    needs: meta
+    if: needs.meta.outputs.package == 'bizdays' && needs.meta.outputs.rc == 'false'
     runs-on: ubuntu-latest
     environment:
       name: release
@@ -70,3 +87,81 @@ jobs:
       - run: cargo publish -p bizdays
         env:
           CARGO_REGISTRY_TOKEN: ${{ steps.auth.outputs.token }}
+
+  build-py:
+    needs: meta
+    if: needs.meta.outputs.package == 'bizdays-rs'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Use the rc version (maturin turns X.Y.Z-rc.N into X.Y.ZrcN)
+        if: needs.meta.outputs.rc == 'true'
+        env:
+          VERSION: ${{ needs.meta.outputs.version }}
+        run: sed -i "0,/^version = .*/s//version = \"$VERSION\"/" py-bizdays/Cargo.toml
+      - uses: PyO3/maturin-action@e83996d129638aa358a18fbd1dfb82f0b0fb5d3b # v1.51.0
+        with:
+          target: x86_64
+          manylinux: auto
+          args: --release --out dist -m py-bizdays/Cargo.toml
+      - uses: PyO3/maturin-action@e83996d129638aa358a18fbd1dfb82f0b0fb5d3b # v1.51.0
+        with:
+          command: sdist
+          args: --out dist -m py-bizdays/Cargo.toml
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: dist
+          path: dist/
+
+  testpypi:
+    needs: [meta, build-py]
+    if: needs.meta.outputs.rc == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: dist
+          path: dist/
+      - uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33 # v1.14.2
+        with:
+          repository-url: https://test.pypi.org/legacy/
+
+  pypi:
+    needs: [meta, build-py]
+    if: needs.meta.outputs.rc == 'false'
+    runs-on: ubuntu-latest
+    environment:
+      name: release
+      url: https://pypi.org/project/bizdays-rs/
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: dist
+          path: dist/
+      - uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33 # v1.14.2
+
+  github-release:
+    needs: [meta, crates-io, pypi]
+    if: >-
+      always() && needs.meta.outputs.rc == 'false' &&
+      (needs.crates-io.result == 'success' || needs.pypi.result == 'success')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+          PACKAGE: ${{ needs.meta.outputs.package }}
+          VERSION: ${{ needs.meta.outputs.version }}
+        run: |
+          awk -v h="## $PACKAGE $VERSION" \
+            'index($0, h) == 1 { on = 1; next } /^## / { on = 0 } on' \
+            CHANGELOG.md > notes.md
+          [[ -s notes.md ]] || echo "See CHANGELOG.md." > notes.md
+          gh release create "$TAG" --verify-tag --title "$PACKAGE $VERSION" --notes-file notes.md

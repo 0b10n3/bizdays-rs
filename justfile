@@ -84,5 +84,61 @@ modo-implementacao estado:
         *) echo "uso: just modo-implementacao on|off|status" >&2; exit 2 ;;
     esac
 
+# Create a Git Flow work branch from develop (e.g. `just branch feature e1-s03-date-civil`)
+branch tipo descricao:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    case "{{ tipo }}" in
+        feature|bugfix|chore|data|spike) ;;
+        *) echo "tipo: feature, bugfix, chore, data ou spike" >&2; exit 2 ;;
+    esac
+    name="{{ tipo }}/{{ descricao }}"
+    uv run python tools/git/flow.py branch "$name"
+    git switch -c "$name" develop
+
+# Start release/<pacote>-<versao> from origin/develop (one open release at a time)
+release-start pacote versao:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    name="release/{{ pacote }}-{{ versao }}"
+    uv run python tools/git/flow.py branch "$name"
+    [[ -z "$(git status --porcelain)" ]] || { echo "working tree is not clean" >&2; exit 1; }
+    git fetch origin
+    open="$(git branch -a --list '*release/*')"
+    [[ -z "$open" ]] || { echo "a release branch is already open:$open" >&2; exit 1; }
+    git switch -c "$name" origin/develop
+
+# Start hotfix/<pacote>-<versao> from origin/main
+hotfix-start pacote versao:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    name="hotfix/{{ pacote }}-{{ versao }}"
+    uv run python tools/git/flow.py branch "$name"
+    [[ -z "$(git status --porcelain)" ]] || { echo "working tree is not clean" >&2; exit 1; }
+    git fetch origin
+    git switch -c "$name" origin/main
+
+# Tag <pacote>-v<versao> and push it; the tag triggers release.yml (final: on main; -rc.N: on its release branch)
+release-finish pacote versao:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    version="{{ versao }}"
+    [[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-rc\.[0-9]+)?$ ]] || { echo "version must be X.Y.Z or X.Y.Z-rc.N" >&2; exit 2; }
+    base="${version%%-rc.*}"
+    manifest="$(uv run python tools/git/flow.py version {{ pacote }})"
+    [[ "$manifest" == "$base" ]] || { echo "manifest has $manifest, expected $base" >&2; exit 1; }
+    branch="$(git branch --show-current)"
+    if [[ "$version" == *-rc.* ]]; then
+        [[ "$branch" == "release/{{ pacote }}-$base" ]] || { echo "rc tags go on release/{{ pacote }}-$base (current: $branch)" >&2; exit 1; }
+    else
+        [[ "$branch" == main || "$branch" == support/{{ pacote }}-* ]] || { echo "final tags go on main or support/* (current: $branch)" >&2; exit 1; }
+    fi
+    [[ -z "$(git status --porcelain)" ]] || { echo "working tree is not clean" >&2; exit 1; }
+    git fetch origin
+    [[ "$(git rev-parse HEAD)" == "$(git rev-parse "origin/$branch")" ]] || { echo "HEAD differs from origin/$branch: pull or push first" >&2; exit 1; }
+    tag="{{ pacote }}-v$version"
+    git tag -a "$tag" -m "{{ pacote }} $version"
+    git push origin "$tag"
+
 # Run everything CI runs
 ci: fmt-check lint test doc test-py data-check fixtures-check docs deny

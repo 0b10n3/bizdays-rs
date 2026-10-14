@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: ["**"]
   pull_request:
 
 permissions:
@@ -16,6 +16,28 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
+  # Git Flow rules (docs/desenvolvimento/fluxo-git.md, section 2).
+  branch-name:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - run: python3 tools/git/flow.py branch "$BRANCH"
+        env:
+          BRANCH: ${{ github.ref_name }}
+
+  pr-flow:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - run: |
+          python3 tools/git/flow.py branch "$HEAD_REF"
+          python3 tools/git/flow.py pr "$HEAD_REF" "$BASE_REF"
+        env:
+          HEAD_REF: ${{ github.head_ref }}
+          BASE_REF: ${{ github.base_ref }}
+
   rust:
     runs-on: ubuntu-latest
     steps:
@@ -43,7 +65,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.10", "3.13"]
+        python-version: ["3.10", "3.14"]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - run: rustup toolchain install
@@ -78,6 +100,12 @@ jobs:
       - uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
       - run: uv sync --only-group docs --locked
       - run: uv run --no-sync mkdocs build --strict
+      - name: Upload docs preview (develop)
+        if: github.ref == 'refs/heads/develop'
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: docs-preview
+          path: site/
 
   wheels:
     runs-on: ubuntu-latest
@@ -98,7 +126,7 @@ jobs:
       - name: Smoke test the wheel in a clean venv
         run: |
           ls dist/*abi3*.whl
-          uv venv --python 3.12 "$RUNNER_TEMP/clean"
+          uv venv --python 3.14 "$RUNNER_TEMP/clean"
           uv pip install --python "$RUNNER_TEMP/clean" dist/*.whl pytest
           "$RUNNER_TEMP/clean/bin/python" -m pytest -p no:cacheprovider py-bizdays/tests
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2

@@ -23,11 +23,6 @@ WEEKDAYS = {
     "Saturday",
     "Sunday",
 }
-# Duplicates present upstream (python-bizdays), kept so the data stays
-# byte-identical to its source. Any other duplicate is an error.
-KNOWN_DUPLICATES = {
-    ("ANBIMA", "2079-04-21"): "Tiradentes coincides with Good Friday",
-}
 # (calendar, date, reason): holidays that must be present.
 SANITY = [("ANBIMA", "2024-11-20", "Consciência Negra, Lei 14.759/2023")]
 
@@ -55,8 +50,6 @@ def parse(path: Path) -> tuple[list[str], list[dt.date], list[str]]:
     if len(set(header)) != len(header):
         errors.append(f"{path.name}: duplicated weekday in header")
     for prev, cur in pairwise(dates):
-        if cur == prev and (path.stem, cur.isoformat()) in KNOWN_DUPLICATES:
-            continue
         if cur <= prev:
             kind = "duplicate" if cur == prev else "out of order"
             errors.append(f"{path.name}: {kind} date {cur} after {prev}")

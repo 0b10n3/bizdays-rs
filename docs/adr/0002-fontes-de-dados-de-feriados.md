@@ -18,7 +18,7 @@ ANBIMA e B3 sob licença MIT há mais de uma década.
    (Federal Reserve), usado na liquidação de FX T+2 — **não** o calendário da
    NYSE. Nenhum `NY.cal` entra sem fonte.
 3. **Versão dos dados:** versionamento por data em `data/DATA_VERSION`
-   (`AAAA.MM.N`, hoje `2026.10.0`), independente da versão da crate. Toda
+   (`AAAA.MM.N`, hoje `2026.10.1`), independente da versão da crate. Toda
    alteração cita fonte oficial e atualiza `DATA_VERSION`, o README dos dados,
    o `CHANGELOG.md` e as fixtures.
 
@@ -29,7 +29,8 @@ ANBIMA e B3 sob licença MIT há mais de uma década.
 - O B3 termina em 2026-12-31: definir fonte para estender (calendário oficial
   da B3).
 - O `ANBIMA.cal` do upstream lista 2079-04-21 duas vezes (Tiradentes e
-  Sexta-feira Santa); reportar ao python-bizdays.
+  Sexta-feira Santa). A duplicata foi removida aqui (dados `2026.10.1`); falta
+  reportar ao python-bizdays.
 
 ## Consequências
 

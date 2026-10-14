@@ -1,11 +1,14 @@
 """Generate golden test fixtures for the bizdays crate from trusted oracles.
 
 Oracles:
-- NumPy (`busday_count`, `is_busday`, `busday_offset`) for counts and rolls;
+- NumPy (`busday_count`, `is_busday`, `busday_offset`) for counts and rolls.
+  Inverted pairs (from > to) follow ADR-0001: `-busday_count(to, from)`, so
+  counts are antisymmetric (NumPy itself counts `(to, from]` there);
 - python-bizdays (`offset`, `getdate`) for offsets and the getdate DSL.
 
 Holidays come from crates/bizdays/data/*.cal (the same data the library
-embeds); the script aborts if python-bizdays loads anything different.
+embeds) and feed both oracles; the script aborts if the calendars bundled
+with python-bizdays differ from them (ignoring upstream duplicates).
 
 Deterministic and idempotent: fixed seed, sorted output, no timestamps.
 
@@ -28,7 +31,7 @@ from pathlib import Path
 import bizdays
 import numpy as np
 
-GENERATOR_VERSION = "1.0.0"
+GENERATOR_VERSION = "1.1.0"
 SEED = 20261013
 CALENDARS = ("ANBIMA", "B3")
 
@@ -63,7 +66,7 @@ GETDATE_EXPRS = (
     "second bizday before last bizday",
 )
 GETDATE_ANNUAL = GETDATE_EXPRS[:4]
-# (from, to) edge cases for bizdays.csv; expected values come from NumPy.
+# (from, to) edge cases for bizdays.csv; expected values come from `Cal.count`.
 EDGE_PAIRS = (
     ("2026-10-13", "2026-10-13"),  # same business day
     ("2026-10-12", "2026-10-12"),  # same non-business day (holiday)
@@ -112,13 +115,18 @@ class Cal:
             weekmask=self.weekmask,
             holidays=np.array(sorted(set(self.holidays)), dtype="datetime64[D]"),
         )
-        self.py = bizdays.Calendar.load(name)
+        self.py = bizdays.Calendar(
+            holidays=self.holidays, weekdays=self.weekdays, name=name
+        )
         # python-bizdays indexes only [first holiday, last holiday].
         self.py_start, self.py_end = self.py.startdate, self.py.enddate
 
     def check_against_python_bizdays(self) -> None:
-        py_holidays = list(self.py.holidays)
-        if py_holidays != self.holidays or list(self.py.weekdays) != self.weekdays:
+        bundled = bizdays.Calendar.load(self.name)
+        if (
+            sorted(set(bundled.holidays)) != self.holidays
+            or list(bundled.weekdays) != self.weekdays
+        ):
             sys.exit(
                 f"{self.name}: holidays in {self.path} differ from python-bizdays "
                 f"{version('bizdays')}; refusing to generate fixtures"
@@ -128,6 +136,8 @@ class Cal:
         return hashlib.sha256(self.path.read_bytes()).hexdigest()
 
     def count(self, a: dt.date, b: dt.date) -> int:
+        if a > b:  # ADR-0001: antisymmetric, unlike NumPy's (b, a]
+            return -self.count(b, a)
         return int(np.busday_count(a, b, busdaycal=self.np))
 
     def is_biz(self, d: dt.date) -> bool:
@@ -216,7 +226,7 @@ def gen_getdate(cal: Cal, skipped: Counter) -> list[tuple]:
 
 
 def gen_divergences(cal: Cal, rng: random.Random) -> tuple[list[tuple], dict]:
-    """Compare python-bizdays and NumPy counts on random pairs."""
+    """Compare python-bizdays counts with ours (ADR-0001) on random pairs."""
     by_kind: dict[str, Counter] = {}
     rows = []
     for _ in range(N_DIVERGENCE_PAIRS):
@@ -231,7 +241,7 @@ def gen_divergences(cal: Cal, rng: random.Random) -> tuple[list[tuple], dict]:
         stats["pairs"] += 1
         if got != expected:
             stats["divergent"] += 1
-            stats[f"python_bizdays_minus_numpy={got - expected:+d}"] += 1
+            stats[f"python_bizdays_minus_expected={got - expected:+d}"] += 1
             rows.append((cal.name, a, b, expected, got, a_biz, b_biz))
     rows = sorted(rows, key=lambda r: (r[1], r[2]))[:MAX_DIVERGENCE_ROWS_PER_CALENDAR]
     return rows, {k: dict(sorted(v.items())) for k, v in sorted(by_kind.items())}
@@ -277,7 +287,7 @@ def main() -> None:
                 "calendar",
                 "from",
                 "to",
-                "numpy",
+                "expected",
                 "python_bizdays",
                 "from_is_biz",
                 "to_is_biz",

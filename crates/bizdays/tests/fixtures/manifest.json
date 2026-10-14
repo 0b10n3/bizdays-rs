@@ -1,5 +1,5 @@
 {
-  "generator_version": "1.0.0",
+  "generator_version": "1.1.0",
   "seed": 20261013,
   "oracles": {
     "numpy": "2.5.4",
@@ -7,7 +7,7 @@
   },
   "calendars": {
     "ANBIMA": {
-      "sha256": "052b79fd79496024d6f00b5672c6dac05473ff2850938e83d726a70b22bc0b96",
+      "sha256": "1c385197308a55de5d0731c6059e73651dd66c63bbdb0872f572978c5cff1e12",
       "weekmask": "1111100",
       "range": [
         "2000-01-01",
@@ -53,17 +53,17 @@
           "pairs": 4733
         },
         "backward:from_biz__to_nonbiz": {
-          "divergent": 2136,
-          "pairs": 2136,
-          "python_bizdays_minus_numpy=+1": 2136
+          "pairs": 2136
         },
         "backward:from_nonbiz__to_biz": {
-          "pairs": 2148
+          "divergent": 2148,
+          "pairs": 2148,
+          "python_bizdays_minus_expected=+1": 2148
         },
         "backward:from_nonbiz__to_nonbiz": {
           "divergent": 1038,
           "pairs": 1038,
-          "python_bizdays_minus_numpy=+1": 1038
+          "python_bizdays_minus_expected=+1": 1038
         },
         "forward:from_biz__to_biz": {
           "pairs": 4763
@@ -71,7 +71,7 @@
         "forward:from_biz__to_nonbiz": {
           "divergent": 2114,
           "pairs": 2114,
-          "python_bizdays_minus_numpy=-1": 2114
+          "python_bizdays_minus_expected=-1": 2114
         },
         "forward:from_nonbiz__to_biz": {
           "pairs": 2132
@@ -79,7 +79,7 @@
         "forward:from_nonbiz__to_nonbiz": {
           "divergent": 935,
           "pairs": 936,
-          "python_bizdays_minus_numpy=-1": 935
+          "python_bizdays_minus_expected=-1": 935
         }
       }
     },
@@ -90,17 +90,17 @@
           "pairs": 4571
         },
         "backward:from_biz__to_nonbiz": {
-          "divergent": 2207,
-          "pairs": 2207,
-          "python_bizdays_minus_numpy=+1": 2207
+          "pairs": 2207
         },
         "backward:from_nonbiz__to_biz": {
-          "pairs": 2103
+          "divergent": 2103,
+          "pairs": 2103,
+          "python_bizdays_minus_expected=+1": 2103
         },
         "backward:from_nonbiz__to_nonbiz": {
           "divergent": 1003,
           "pairs": 1004,
-          "python_bizdays_minus_numpy=+1": 1003
+          "python_bizdays_minus_expected=+1": 1003
         },
         "forward:from_biz__to_biz": {
           "pairs": 4656
@@ -108,7 +108,7 @@
         "forward:from_biz__to_nonbiz": {
           "divergent": 2231,
           "pairs": 2231,
-          "python_bizdays_minus_numpy=-1": 2231
+          "python_bizdays_minus_expected=-1": 2231
         },
         "forward:from_nonbiz__to_biz": {
           "pairs": 2144
@@ -116,7 +116,7 @@
         "forward:from_nonbiz__to_nonbiz": {
           "divergent": 1084,
           "pairs": 1084,
-          "python_bizdays_minus_numpy=-1": 1084
+          "python_bizdays_minus_expected=-1": 1084
         }
       }
     }

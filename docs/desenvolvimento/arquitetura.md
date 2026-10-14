@@ -52,15 +52,14 @@ Consultas, todas O(1):
 | Operação | Fórmula |
 |---|---|
 | `is_bizday(d)` | \(\mathrm{cum}[i+1] - \mathrm{cum}[i] = 1\) |
-| `bizdays(a, b)`, \(a \le b\) | \(\mathrm{cum}[i_b] - \mathrm{cum}[i_a]\) — dias úteis em \([a, b)\) |
+| `bizdays(a, b)` | \(\mathrm{cum}[i_b] - \mathrm{cum}[i_a]\) — dias úteis em \([a, b)\); negativo se \(a > b\) |
 | `following(d)` | \(\mathrm{bizlist}[\mathrm{cum}[i]]\) |
 | `preceding(d)` | \(\mathrm{bizlist}[\mathrm{cum}[i+1] - 1]\) |
 | `offset(d, n)`, \(d\) útil | \(\mathrm{bizlist}[\mathrm{cum}[i] + n]\) |
 
-Para `bizdays(a, b)` com \(a > b\), veja o ponto em aberto da
-[semântica](../conceitos/semantica.md#ponto-em-aberto-pares-invertidos):
-\(\mathrm{cum}[i_b] - \mathrm{cum}[i_a]\) é antissimétrico; o NumPy dá
-\(-(\mathrm{cum}[i_a+1] - \mathrm{cum}[i_b+1])\).
+A mesma fórmula vale para \(a > b\) e é antissimétrica (ADR-0001). O NumPy
+daria \(-(\mathrm{cum}[i_a+1] - \mathrm{cum}[i_b+1])\); veja
+[pares invertidos](../conceitos/semantica.md#pares-invertidos).
 
 Índices fora de `0..len` viram `Error`, nunca `panic`. Memória: ~4 bytes por
 dia da faixa + 4 por dia útil; 100 anos ≈ 240 KB.

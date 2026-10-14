@@ -186,7 +186,7 @@ Antes de declarar concluída uma tarefa de infraestrutura, rode `just ci`.
 
 ## 12. Referências
 
-- Plano: `docs/desenvolvimento/estrategia.md`, `roadmap.md`, `arquitetura.md`, `testes.md`, `fluxo-git.md`.
+- Plano: `docs/desenvolvimento/estrategia.md`, `roadmap.md`, `plano-semanal.md`, `arquitetura.md`, `testes.md`, `fluxo-git.md`.
 - Rust: *The Rust Programming Language* (Rust Book), Rust API Guidelines, guia do PyO3, maturin, pyo3-polars.
 - Oráculos: NumPy `busday_count`/`busday_offset`; python-bizdays (inspiração e dados, MIT).
 - Domínio: Carreira & Brostowicz (2016), *Brazilian Derivatives and Securities*, cap. 2; Manual da Calculadora de Renda Fixa (CALC) da B3.

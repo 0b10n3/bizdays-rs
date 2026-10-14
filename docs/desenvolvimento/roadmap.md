@@ -11,5 +11,8 @@
 
 Fase atual: **Fase 0 concluída — próxima: Fase 1 (núcleo escalar)**.
 
+O cronograma por semana, com os épicos E0–E9, está no
+[plano semanal](plano-semanal.md).
+
 Primeiro exercício da Fase 1: teste vermelho de `Date::from_ymd` /
 `Date::to_ymd` (Rust Book, cap. 5 e 11).

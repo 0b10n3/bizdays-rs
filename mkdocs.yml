@@ -98,6 +98,7 @@ nav:
       - Arquitetura: desenvolvimento/arquitetura.md
       - Testes: desenvolvimento/testes.md
       - Roadmap: desenvolvimento/roadmap.md
+      - Plano semanal: desenvolvimento/plano-semanal.md
       - Estratégia: desenvolvimento/estrategia.md
       - Diário de aprendizado: desenvolvimento/diario.md
   - ADRs:

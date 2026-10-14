@@ -1,0 +1,18 @@
+{
+  "recommendations": [
+    "rust-lang.rust-analyzer",
+    "vadimcn.vscode-lldb",
+    "tamasfe.even-better-toml",
+    "fill-labs.dependi",
+    "usernamehw.errorlens",
+    "ms-python.python",
+    "charliermarsh.ruff",
+    "nefrob.vscode-just-syntax",
+    "github.vscode-github-actions",
+    "github.vscode-pull-request-github",
+    "redhat.vscode-yaml",
+    "editorconfig.editorconfig",
+    "anthropic.claude-code",
+    "google.geminicodeassist"
+  ]
+}

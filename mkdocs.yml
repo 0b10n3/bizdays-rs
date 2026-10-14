@@ -1,0 +1,103 @@
+# Compatível com Zensical (ADR-0003): só os plugins search e mkdocstrings e
+# extensões padrão do Python-Markdown/PyMdown.
+site_name: bizdays
+site_description: Dias úteis para aplicações financeiras, com foco no mercado brasileiro
+site_url: https://0b10n3.github.io/bizdays-rs/
+repo_url: https://github.com/0b10n3/bizdays-rs
+repo_name: 0b10n3/bizdays-rs
+edit_uri: edit/main/docs/
+copyright: MIT OR Apache-2.0
+
+theme:
+  name: material
+  language: pt-BR
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/weather-night
+        name: Mudar para o modo escuro
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/weather-sunny
+        name: Mudar para o modo claro
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - search.highlight
+    - content.code.copy
+    - content.code.annotate
+    - content.tabs.link
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.snippets:
+      base_path: ["."]
+      check_paths: true
+  - pymdownx.arithmatex:
+      generic: true
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [py-bizdays/python]
+
+extra_css:
+  - stylesheets/syntaxis.css
+  - stylesheets/material-bridge.css
+
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
+
+nav:
+  - Início: index.md
+  - Guia rápido: guia-rapido.md
+  - Conceitos:
+      - Semântica de contagem: conceitos/semantica.md
+      - Calendários: calendarios.md
+      - Convenções de contagem: convencoes.md
+  - Integrações:
+      - Polars: integracoes/polars.md
+      - pandas: integracoes/pandas.md
+      - PySpark: integracoes/spark.md
+  - Benchmarks: benchmarks.md
+  - Referência:
+      - Python: referencia/python.md
+      - Rust: referencia/rust.md
+  - Desenvolvimento:
+      - Contribuindo: desenvolvimento/contribuindo.md
+      - Agentes de IA: desenvolvimento/agentes.md
+      - Arquitetura: desenvolvimento/arquitetura.md
+      - Testes: desenvolvimento/testes.md
+      - Roadmap: desenvolvimento/roadmap.md
+      - Estratégia: desenvolvimento/estrategia.md
+      - Diário de aprendizado: desenvolvimento/diario.md
+  - ADRs:
+      - Modelo: adr/0000-template.md
+      - 0001 Semântica de contagem: adr/0001-semantica-de-contagem.md
+      - 0002 Fontes de dados de feriados: adr/0002-fontes-de-dados-de-feriados.md
+      - 0003 Ferramenta de documentação: adr/0003-ferramenta-de-documentacao.md
+      - 0004 Modo tutor: adr/0004-modo-tutor.md
+      - 0005 Semântica de offset: adr/0005-semantica-de-offset.md

@@ -233,11 +233,14 @@ Outras configurações do repositório:
 | Semanas | Branches | Release |
 |---|---|---|
 | 1 | `chore/e0-s01-repo-setup` (`main` e `develop` criadas aqui) | — |
-| 2–16 | `feature/*`, `data/*`, `chore/*` → `develop` | — |
+| 2–11 | `feature/*`, `data/*`, `chore/*` → `develop` | — |
+| **12** | `release/bizdays-0.1.0-alpha.1` | **bizdays 0.1.0-alpha.1** (crates.io; primeira publicação, manual) |
+| 13–16 | `feature/*`, `data/*`, `chore/*` → `develop` | — |
 | **17** | `release/bizdays-0.1.0` | **bizdays 0.1.0** (crates.io) |
 | 18–19 | `feature/e7-*` → `develop`; `spike/e7-s20-cum-u16` | — |
 | **20** | `release/bizdays-0.2.0` (kernels vetorizados) | **bizdays 0.2.0** |
-| 21–24 | `feature/e8-*` → `develop` | — |
+| **21** | `feature/e8-*` → `develop`; no fim, `release/bizdays-rs-0.1.0-alpha.1` | **bizdays-rs 0.1.0a1** (PyPI) |
+| 22–24 | `feature/e8-*` → `develop` | — |
 | **25** | `release/bizdays-rs-0.1.0` | **bizdays-rs 0.1.0** (PyPI) |
 | 26–27 | `feature/e9-*`, `chore/e9-*` → `develop` | — |
 | **28** | `release/bizdays-rs-0.2.0` (Arrow/Spark) | **bizdays-rs 0.2.0** + lançamento |

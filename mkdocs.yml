@@ -11,8 +11,8 @@ copyright: MIT
 theme:
   name: material
   language: pt-BR
-  logo: assets/logo.svg
-  favicon: assets/logo.svg
+  logo: assets/favicon.svg  # no cabeçalho, só o ícone; o logo completo fica na home
+  favicon: assets/favicon.svg
   font:  # tokens typography.fontFamily (body, data) de docs/brand/tokens.json
     text: Source Sans 3
     code: IBM Plex Mono
@@ -98,6 +98,7 @@ nav:
       - Arquitetura: desenvolvimento/arquitetura.md
       - Testes: desenvolvimento/testes.md
       - Roadmap: desenvolvimento/roadmap.md
+      - Plano semanal: desenvolvimento/plano-semanal.md
       - Estratégia: desenvolvimento/estrategia.md
       - Diário de aprendizado: desenvolvimento/diario.md
   - ADRs:

@@ -1,3 +1,5 @@
+![bizdays](assets/logo.svg){ width="160" }
+
 # bizdays
 
 Dias úteis para aplicações financeiras, com foco no mercado brasileiro

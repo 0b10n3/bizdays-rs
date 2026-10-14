@@ -1,3 +1,5 @@
+<p align="center"><img src="docs/assets/logo.svg" alt="bizdays" width="160"></p>
+
 # bizdays
 
 Business-day calendars for financial applications, focused on the Brazilian market (ANBIMA and B3 holidays).

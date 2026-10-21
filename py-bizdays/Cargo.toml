@@ -16,7 +16,7 @@ crate-type = ["cdylib"]
 
 [dependencies]
 bizdays = { path = "../crates/bizdays" }
-pyo3 = { version = "0.29.3", features = ["abi3-py310"] }
+pyo3 = { version = "0.30.1", features = ["abi3-py310"] }
 
 [lints]
 workspace = true
